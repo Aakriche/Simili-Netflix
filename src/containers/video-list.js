@@ -6,7 +6,6 @@ import VideoListItem from '../components/video-list-item'
 const VideoList = (props) => {
 
   const { movieList } = props;
-  console.log('----MOVIELIST----', movieList)
 
     return (
         <div className="videoList">
@@ -25,6 +24,7 @@ const VideoList = (props) => {
     )
 
     function receiveCallBack(movie) {
+        
         props.callback(movie);
     }
     

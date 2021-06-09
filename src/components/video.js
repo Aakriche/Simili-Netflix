@@ -4,8 +4,8 @@ const YOUTUBE_URL = 'https://www.youtube.com/embed/';
 
 const Video = ({videoId}) => {
     return (
-        <div className="video">
-            <iframe height= "250px" width="500px" src={`${YOUTUBE_URL}${videoId}`}/>
+        <div className="embed-responsive embed-responsive-16by9">
+            <iframe className="embed-responsive-item" height= "400px" width="700px" src={`${YOUTUBE_URL}${videoId}`}/>
                 
         </div>
     )
