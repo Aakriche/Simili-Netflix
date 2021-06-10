@@ -20,9 +20,14 @@ class SearchBar extends React.Component {
             onChange={this.handleChange.bind(this)}
             className="form-control input-lg"
           />
+          <button className="btn" onClick={this.handleClick.bind(this)}>Go</button>
         </div>
       </div>
     );
+  }
+
+  handleClick() {
+    this.props.callback(this.state.inputValue)
   }
 }
 

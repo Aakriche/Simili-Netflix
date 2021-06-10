@@ -9,6 +9,7 @@ import Video from "../components/video";
 const API_KEY = "api_key=b1bb009f89a909c0ae0b65bc17104e0e";
 const API_END_POINT = "https://api.themoviedb.org/3/";
 const POPULAR_MOVIES_URL ="discover/movie?language=fr&sort_by=popularity.desc&include_adult=false&append_to_response=images";
+const SEARCH_URL = "search/movie?language=fr&include_adult=false";
 
 class App extends Component {
   constructor(props) {
@@ -57,10 +58,32 @@ class App extends Component {
   receiveCallBack(movie) {
     this.setState({currentMovie : movie}, () => {
       this.applyCurrentVideo();
+      this.setRecommendation();
     })
 
   }
 
+  setRecommendation() {
+    axios.get(`${API_END_POINT}movie/${this.state.currentMovie.id}/recommendations?${API_KEY}&language=fr`).then(function (res) {
+      this.setState({ movieList: res.data.results.slice(0, 5) });
+    }.bind(this));
+  }
+
+
+  onClickSearch(searchText){
+    console.log(searchText);
+    axios.get(`${API_END_POINT}${SEARCH_URL}&${API_KEY}&query=${searchText}`).then(function (res) {
+      console.log('---moviesearch----', res);
+      if (res.data && res.data.results[0]) {
+        if (res.data.results[0].id !== this.state.currentMovie.id){
+            this.setState({currentMovie : res.data.results[0] }, () => {
+              this.applyCurrentVideo();
+              this.setRecommendation();
+            })
+        }
+    }
+  }.bind(this));
+}
 
   render() {
     const renderVideoList = () => {
@@ -71,7 +94,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <SearchBar />
+        <SearchBar callback={this.onClickSearch.bind(this)}/>
         <div className="row">
           <div className="col-md-8">
             <Video videoId={this.state.currentMovie.videoId} />
